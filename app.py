@@ -4,13 +4,13 @@ from database import init_db
 
 app = Flask(__name__)
 
-# helper function to connect to database...
+init_db()
+
 def get_db():
     conn = sqlite3.connect('todo.db')
-    conn.row_factory = sqlite3.Row  # lets us access columns by name
+    conn.row_factory = sqlite3.Row
     return conn
 
-# home page ---- shows all tasks
 @app.route('/')
 def index():
     conn = get_db()
@@ -18,7 +18,6 @@ def index():
     conn.close()
     return render_template('index.html', tasks=tasks)
 
-# Add a new task
 @app.route('/add', methods=['POST'])
 def add():
     title = request.form['title']
@@ -28,7 +27,6 @@ def add():
     conn.close()
     return redirect(url_for('index'))
 
-# mark a task as complete
 @app.route('/complete/<int:id>')
 def complete(id):
     conn = get_db()
@@ -37,7 +35,6 @@ def complete(id):
     conn.close()
     return redirect(url_for('index'))
 
-# delete a task
 @app.route('/delete/<int:id>')
 def delete(id):
     conn = get_db()
@@ -47,5 +44,4 @@ def delete(id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    init_db()  #create database on startup
     app.run(debug=True)
