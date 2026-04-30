@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
-from database import init_db
+from database import init_db, DB_PATH
 
 app = Flask(__name__)
 
 init_db()
 
 def get_db():
-    conn = sqlite3.connect('todo.db')
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
